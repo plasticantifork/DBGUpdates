@@ -9,19 +9,18 @@ import tweepy
 import praw
 from datetime import datetime,timedelta
 
-r = praw.Reddit('Planetside 2 Update Poster')
-r.login(credentials.u, credentials.p)
-twitterAuthFile = open(os.path.join(sys.path[0], 'twitterAuth'), 'r')
-consumerKey = twitterAuthFile.readline().strip()
-consumerSecret = twitterAuthFile.readline().strip()
-accessToken = twitterAuthFile.readline().strip()
-accessTokenSecret = twitterAuthFile.readline().strip()
-twitterAuthFile.close()
-auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
-auth.set_access_token(accessToken, accessTokenSecret)
-api = tweepy.API(auth)
-
 def Monitor():
+    r = praw.Reddit('Planetside 2 Update Poster')
+    r.login(credentials.u, credentials.p)
+    twitterAuthFile = open(os.path.join(sys.path[0], 'twitterAuth'), 'r')
+    consumerKey = twitterAuthFile.readline().strip()
+    consumerSecret = twitterAuthFile.readline().strip()
+    accessToken = twitterAuthFile.readline().strip()
+    accessTokenSecret = twitterAuthFile.readline().strip()
+    twitterAuthFile.close()
+    auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
+    auth.set_access_token(accessToken, accessTokenSecret)
+    api = tweepy.API(auth)
     with open(os.path.join(sys.path[0], 'siteList.txt'), 'r') as f:
         for line in f:
             timeZone = datetime.utcnow() - timedelta(hours=7)
