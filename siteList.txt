@@ -1,0 +1,8 @@
+Upcoming PS2 [LIVE] @Planetside2,http://manifest.patch.daybreakgames.com/patch/sha/manifest/planetside2/planetside2-live/livenext/planetside2-live.sha.soe.txt,#Planetside2 #DBGUpdatePS2
+Upcoming PS2 [TEST] @Planetside2,http://manifest.patch.daybreakgames.com/patch/sha/manifest/planetside2/planetside2-test/livenext/planetside2-test.sha.soe.txt,#Planetside2 #DBGUpdatePS2
+Upcoming H1Z1 [LIVE] @H1Z1game,http://manifest.patch.daybreakgames.com/patch/sha/manifest/h1z1/live/play/next/live.sha.soe.txt,#H1Z1 #DBGUpdateH1Z1
+Upcoming H1Z1 [TEST] @H1Z1game,http://manifest.patch.daybreakgames.com/patch/sha/manifest/h1z1/test/play/next/test.sha.soe.txt,#H1Z1 #DBGUpdateH1Z1
+PS2 [LIVE] @Planetside2,http://manifest.patch.daybreakgames.com/patch/sha/manifest/planetside2/planetside2-live/live/planetside2-live.sha.soe.txt,#Planetside2 #DBGUpdatePS2
+PS2 [TEST] @Planetside2,http://manifest.patch.daybreakgames.com/patch/sha/manifest/planetside2/planetside2-test/live/planetside2-test.sha.soe.txt,#Planetside2 #DBGUpdatePS2
+H1Z1 [LIVE] @H1Z1game,http://manifest.patch.daybreakgames.com/patch/sha/manifest/h1z1/live/play/current/live.sha.soe.txt,#H1Z1 #DBGUpdateH1Z1
+H1Z1 [TEST] @H1Z1game,http://manifest.patch.daybreakgames.com/patch/sha/manifest/h1z1/test/play/current/test.sha.soe.txt,#H1Z1 #DBGUpdateH1Z1
