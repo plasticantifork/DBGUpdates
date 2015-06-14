@@ -3,6 +3,7 @@
 import sys, os
 import traceback
 import requests
+from requests.exceptions import HTTPError
 import hashlib
 import credentials
 import tweepy
@@ -60,7 +61,7 @@ def Monitor():
 try:
     Monitor()
 except HTTPError:
-    pass
+    print "HTTPError Occurred"
 except Exception:
     traceback.print_exc()
 quit()
