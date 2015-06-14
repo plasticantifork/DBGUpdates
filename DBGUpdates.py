@@ -40,10 +40,10 @@ def Monitor():
                 print 'First time run for: %s' % Message
             else:
                 websiteHash = hashlib.md5(requests.get(url).content).hexdigest()
-                hashFile = open(os.path.join(sys.path[0], fileName), "r")
+                hashFile = open(os.path.join(sys.path[0], fileName), 'r')
                 oldWebsiteHash = hashFile.readline().strip()
                 hashFile.close()
-                hashFile = open(os.path.join(sys.path[0], fileName), "w")
+                hashFile = open(os.path.join(sys.path[0], fileName), 'w')
                 hashFile.write(websiteHash)
                 hashFile.close()
                 if(websiteHash != oldWebsiteHash):
@@ -61,7 +61,7 @@ def Monitor():
 try:
     Monitor()
 except HTTPError:
-    print "HTTPError Occurred"
+    print 'HTTPError Occurred'
 except Exception:
     traceback.print_exc()
 quit()
