@@ -3,7 +3,6 @@
 import sys, os
 import traceback
 import requests
-from requests.exceptions import HTTPError
 import hashlib
 import credentials
 import tweepy
@@ -60,7 +59,7 @@ def Monitor():
                     api.update_status(status=twitterPost)
 try:
     Monitor()
-except HTTPError:
+except requests.exceptions.HTTPError:
     print 'HTTPError Occurred'
 except Exception:
     traceback.print_exc()
