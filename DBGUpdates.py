@@ -11,7 +11,7 @@ from datetime import datetime,timedelta
 
 def Monitor():
     r = praw.Reddit('Planetside 2 Update Poster')
-    r.login(credentials.u, credentials.p)
+    r.login(credentials.u, credentials.p, disable_warning=True)
     twitterAuthFile = open(os.path.join(sys.path[0], 'twitterAuth'), 'r')
     consumerKey = twitterAuthFile.readline().strip()
     consumerSecret = twitterAuthFile.readline().strip()
