@@ -18,17 +18,6 @@ def sizeof_fmt(num, suffix='B'):
     return '%.1f %s%s' % (num, 'Yi', suffix)
 
 def Monitor():
-    r = praw.Reddit('Planetside 2 Update Poster')
-    r.login(credentials.u, credentials.p, disable_warning=True)
-    twitterAuthFile = open(os.path.join(sys.path[0], 'twitterAuth'), 'r')
-    consumerKey = twitterAuthFile.readline().strip()
-    consumerSecret = twitterAuthFile.readline().strip()
-    accessToken = twitterAuthFile.readline().strip()
-    accessTokenSecret = twitterAuthFile.readline().strip()
-    twitterAuthFile.close()
-    auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
-    auth.set_access_token(accessToken, accessTokenSecret)
-    api = tweepy.API(auth)
     with open(os.path.join(sys.path[0], 'siteList.txt'), 'r') as f:
         for line in f:
             timeZone = datetime.utcnow() - timedelta(hours=7)
@@ -37,42 +26,47 @@ def Monitor():
             hashTags = line.split(',')[2]
             url = line.split(',')[1]
             urlCommon = line.split(',')[3]
-            fileName = 'hashes/%s' % Message
-            fileNameCommon = 'hashes/C-%s' % Message
+            urlCommon = urlCommon.rstrip()
+            fileName = 'tstamps/%s' % Message
+            fileNameCommon = 'tstamps/C-%s' % Message
             try:
-                hashFileCommon = open(os.path.join(sys.path[0], fileNameCommon), 'r')
+                tstampFileCommon = open(os.path.join(sys.path[0], fileNameCommon), 'r')
             except:
-                websiteHashCommon = hashlib.md5(requests.get(urlCommon).content).hexdigest()
-                hashFileCommon = open(os.path.join(sys.path[0], fileNameCommon), 'w')
-                hashFileCommon.write(websiteHashCommon)
-                hashFileCommon.close()
-                print 'Creating common hash file: %s' % Message
+                resp = requests.head(urlCommon)
+                websiteTstampCommon = resp.headers['Last-Modified']
+                tstampFileCommon = open(os.path.join(sys.path[0], fileNameCommon), 'w')
+                tstampFileCommon.write(websiteTstampCommon)
+                tstampFileCommon.close()
+                print 'Creating common tstamp file: %s' % Message
             try:
-                hashFile = open(os.path.join(sys.path[0], fileName), 'r')
+                tstampFile = open(os.path.join(sys.path[0], fileName), 'r')
             except:
-                websiteHash = hashlib.md5(requests.get(url).content).hexdigest()
-                hashFile = open(os.path.join(sys.path[0], fileName), 'w')
-                hashFile.write(websiteHash)
-                hashFile.close()
-                print 'Creating hash file: %s' % Message
+                resp = requests.head(url)
+                websiteTstamp = resp.headers['Last-Modified']
+                tstampFile = open(os.path.join(sys.path[0], fileName), 'w')
+                tstampFile.write(websiteTstamp)
+                tstampFile.close()
+                print 'Creating tstamp file: %s' % Message
             else:
-                websiteHash = hashlib.md5(requests.get(url).content).hexdigest()
-                hashFile = open(os.path.join(sys.path[0], fileName), 'r')
-                oldWebsiteHash = hashFile.readline().strip()
-                hashFile.close()
-                hashFile = open(os.path.join(sys.path[0], fileName), 'w')
-                hashFile.write(websiteHash)
-                hashFile.close()
-                #oldWebsiteHash = 'sdfsdf'
-                websiteHashCommon = hashlib.md5(requests.get(urlCommon).content).hexdigest()
-                hashFileCommon = open(os.path.join(sys.path[0], fileNameCommon), 'r')
-                oldWebsiteHashCommon = hashFileCommon.readline().strip()
-                hashFileCommon.close()
-                hashFileCommon = open(os.path.join(sys.path[0], fileNameCommon), 'w')
-                hashFileCommon.write(websiteHashCommon)
-                hashFileCommon.close()
-                #oldWebsiteHashCommon = 'sdfsdf'
-                if(websiteHash != oldWebsiteHash) or (websiteHashCommon != oldWebsiteHashCommon):
+                resp = requests.head(url)
+                websiteTstamp = resp.headers['Last-Modified']
+                tstampFile = open(os.path.join(sys.path[0], fileName), 'r')
+                oldWebsiteTstamp = tstampFile.readline().strip()
+                tstampFile.close()
+                tstampFile = open(os.path.join(sys.path[0], fileName), 'w')
+                tstampFile.write(websiteTstamp)
+                tstampFile.close()
+                #oldWebsiteTstamp = 'sdfsdf'
+                resp = requests.head(urlCommon)
+                websiteTstampCommon = resp.headers['Last-Modified']
+                tstampFileCommon = open(os.path.join(sys.path[0], fileNameCommon), 'r')
+                oldWebsiteTstampCommon = tstampFileCommon.readline().strip()
+                tstampFileCommon.close()
+                tstampFileCommon = open(os.path.join(sys.path[0], fileNameCommon), 'w')
+                tstampFileCommon.write(websiteTstampCommon)
+                tstampFileCommon.close()
+                #oldWebsiteTstampCommon = 'sdfsdf'
+                if(websiteTstamp != oldWebsiteTstamp) or (websiteTstampCommon != oldWebsiteTstampCommon):
                     patchSize = 0
                     redditFileNames = []
                     if ('Upcoming' not in Message) and ('PS2' in Message):
@@ -86,7 +80,7 @@ def Monitor():
                             lastUrl = 'http://manifest.patch.daybreakgames.com/patch/sha/manifest/planetside2/planetside2-test/livelast/planetside2-test.sha.soe.txt'
                             newCommonUrl = 'http://manifest.patch.daybreakgames.com/patch/sha/manifest/planetside2/planetside2-testcommon/live/planetside2-testcommon.sha.soe.txt'
                             lastCommonUrl = 'http://manifest.patch.daybreakgames.com/patch/sha/manifest/planetside2/planetside2-testcommon/livelast/planetside2-testcommon.sha.soe.txt'
-                        if(websiteHash != oldWebsiteHash):
+                        if(websiteTstamp != oldWebsiteTstamp):
                             newRoot = etree.parse(newUrl)
                             lastRoot = etree.parse(lastUrl)
                             for newFile in newRoot.iter('file'):
@@ -110,7 +104,7 @@ def Monitor():
                                                 if (isinstance(newFile.get('compressedSize'), str)):
                                                     patchSize+=int(newFile.get('compressedSize'))
                                                     redditFileNames.append(newFile.get('name'))
-                        if (websiteHashCommon != oldWebsiteHashCommon):
+                        if (websiteTstampCommon != oldWebsiteTstampCommon):
                             newRoot = etree.parse(newCommonUrl)
                             lastRoot = etree.parse(lastCommonUrl)
                             for newFile in newRoot.iter('file'):
@@ -135,12 +129,24 @@ def Monitor():
                                                     patchSize+=int(newFile.get('compressedSize'))
                                                     redditFileNames.append(newFile.get('name'))
                     if ('Upcoming' not in Message) and ('PS2' in Message):
+                        r = praw.Reddit('Planetside 2 Update Poster')
+                        r.login(credentials.u, credentials.p, disable_warning=True)
                         redditMessage = ' '.join(Message.replace('@Planetside2', '').split())
                         redditPost = u'\u25B2 %s update detected at %s' % (redditMessage, updateTime)
                         print '%s|Posting to Reddit (%s)' % (updateTime, Message)
                         redditFileNames.sort()
                         redditBody = '##**Files Changed**\n\n* %s\n\n**Size:** %s (%s bytes)\n\n*via [@PS2Updates](https://twitter.com/ps2updates)*' % ('\n* '.join(redditFileNames), sizeof_fmt(patchSize), '{0:,}'.format(patchSize))
                         r.submit('planetside', redditPost, text=redditBody)
+                        
+                        twitterAuthFile = open(os.path.join(sys.path[0], 'twitterAuth'), 'r')
+                        consumerKey = twitterAuthFile.readline().strip()
+                        consumerSecret = twitterAuthFile.readline().strip()
+                        accessToken = twitterAuthFile.readline().strip()
+                        accessTokenSecret = twitterAuthFile.readline().strip()
+                        twitterAuthFile.close()
+                        auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
+                        auth.set_access_token(accessToken, accessTokenSecret)
+                        api = tweepy.API(auth)
                     if 'Upcoming' in Message:
                         twitterPost = u'\u27F3 %s update detected at %s %s' % (Message, updateTime, hashTags)
                     else:
