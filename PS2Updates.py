@@ -26,6 +26,7 @@ def Monitor():
             hashTags = line.split(',')[2]
             url = line.split(',')[1]
             urlCommon = line.split(',')[3]
+            urlCommon = urlCommon.rstrip()
             fileName = 'tstamps/%s' % Message
             fileNameCommon = 'tstamps/C-%s' % Message
             try:
