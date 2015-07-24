@@ -4,9 +4,8 @@ import sys, os
 import traceback
 import requests
 import hashlib
-import credentials
 import tweepy
-import praw
+import praw, oauthPS2Bot
 from lxml import etree
 from datetime import datetime,timedelta
 
@@ -128,9 +127,10 @@ def Monitor():
                                                 if (isinstance(newFile.get('compressedSize'), str)):
                                                     patchSize+=int(newFile.get('compressedSize'))
                                                     redditFileNames.append(newFile.get('name'))
+                                                    
+                                                    
                     if ('Upcoming' not in Message) and ('PS2' in Message):
-                        r = praw.Reddit('Planetside 2 Update Poster')
-                        r.login(credentials.u, credentials.p, disable_warning=True)
+                        r = oauthPS2Bot.login()
                         redditMessage = ' '.join(Message.replace('@Planetside2', '').split())
                         redditPost = u'\u25B2 %s update detected at %s' % (redditMessage, updateTime)
                         print '%s|Posting to Reddit (%s)' % (updateTime, Message)
