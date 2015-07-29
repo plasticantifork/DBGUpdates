@@ -135,7 +135,7 @@ def Monitor():
                         redditPost = u'\u25B2 %s update detected at %s' % (redditMessage, updateTime)
                         print '%s|Posting to Reddit (%s)' % (updateTime, Message)
                         redditFileNames.sort()
-                        redditBody = '##**Files Changed**\n\n* %s\n\n**Size:** %s (%s bytes)\n\n*via [@PS2Updates](https://twitter.com/ps2updates)*' % ('\n* '.join(redditFileNames), sizeof_fmt(patchSize), '{0:,}'.format(patchSize))
+                        redditBody = '##**Files Changed**\n\n* %s\n\n**Size:** %s (%s bytes)\n\n*via [@PS2Updates](https://twitter.com/ps2updates) ([source code](https://github.com/plasticantifork/PS2Updates))*' % ('\n* '.join(redditFileNames), sizeof_fmt(patchSize), '{0:,}'.format(patchSize))
                         r.submit('planetside', redditPost, text=redditBody)
                         
                     if 'Upcoming' in Message:
