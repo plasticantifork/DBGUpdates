@@ -157,6 +157,8 @@ try:
     Monitor()
 except requests.exceptions.HTTPError:
     print 'HTTPError Occurred'
+except ConnectionError:
+    print 'ConnectionError Occurred'
 except Exception:
     traceback.print_exc()
 quit()
