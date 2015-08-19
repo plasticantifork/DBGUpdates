@@ -128,12 +128,26 @@ def Monitor():
                                                     patchSize+=int(newFile.get('compressedSize'))
                                                     redditFileNames.append(newFile.get('name'))
                                                     
-                                                    
                     if ('Upcoming' not in Message) and ('PS2' in Message):
                         r = oauthPS2Bot.login()
                         redditMessage = ' '.join(Message.replace('@Planetside2', '').split())
                         redditPost = u'\u25B2 %s update detected at %s' % (redditMessage, updateTime)
                         print '%s|Posting to Reddit (%s)' % (updateTime, Message)
+                        redditFileNames.sort()
+                        counter = 0
+                        firstAsset = ''
+                        if any('.pack' in a for a in redditFileNames):
+                            for n in redditFileNames[:]:
+                                if (n.endswith('.pack')):
+                                    if (not firstAsset):
+                                        firstAsset = n
+                                    redditFileNames.remove(n)
+                                    counter += 1        
+                        assetCount = counter-1
+                        if (counter > 1):
+                            redditFileNames.append('%s (and %s more)' % (firstAsset, assetCount))
+                        elif (counter == 1):
+                            redditFileNames.append(firstAsset)
                         redditFileNames.sort()
                         redditBody = '##**Files Changed**\n\n* %s\n\n**Size:** %s (%s bytes)\n\n*via [@PS2Updates](https://twitter.com/ps2updates) ([source code](https://github.com/plasticantifork/PS2Updates))*' % ('\n* '.join(redditFileNames), sizeof_fmt(patchSize), '{0:,}'.format(patchSize))
                         r.submit('planetside', redditPost, text=redditBody)
